@@ -17,8 +17,19 @@ public class DatabaseApp extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+    public void onCreate(SQLiteDatabase db) {
+        StringBuilder cmd = new StringBuilder();
+        cmd.append(" CREATE TABLE locations ( ");
+        cmd.append("    id INTEGER NOT NULL, ");
+        cmd.append("    description VARCHAR(120) NOT NULL, ");
+        cmd.append("    date TIMESTAMP, ");
+        cmd.append("    notes VARCHAR, ");
+        cmd.append("    photo BYTES, ");
 
+        cmd.append("    PRIMARY KEY (id) ");
+        cmd.append(" ); ");
+
+        db.execSQL(cmd.toString());
     }
 
     @Override
