@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseApp extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "TravelDiary";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     public DatabaseApp(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -25,6 +25,7 @@ public class DatabaseApp extends SQLiteOpenHelper {
         cmd.append("    date TIMESTAMP, ");
         cmd.append("    notes VARCHAR, ");
         cmd.append("    photo BYTES, ");
+        cmd.append("    fbSendDate TIMESTAMP, ");
 
         cmd.append("    PRIMARY KEY (id) ");
         cmd.append(" ); ");
@@ -33,7 +34,13 @@ public class DatabaseApp extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        switch (oldVersion) {
+            case 1: updateToVersion2(db);
+        }
+    }
 
+    private void updateToVersion2(SQLiteDatabase db) {
+        db.execSQL("ALTER TABLE locations ADD COLUMN fbSendDate TIMESTAMP;");
     }
 }
